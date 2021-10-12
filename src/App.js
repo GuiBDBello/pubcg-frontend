@@ -18,10 +18,13 @@ function App() {
   };
 
   return (
-    <div>
-      <input type="file" ref={fileElement} />
-      <button onClick={sendFile}>Send file</button>
-    </div>
+    <>
+      <div>
+        <input type="file" ref={fileElement} />
+        <button onClick={sendFile}>Send file</button>
+      </div>
+      {/* <iframe src="http://localhost:8080/games/UnreliableWebGL" title="PubCG"></iframe> */}
+    </>
   );
 }
 
