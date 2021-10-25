@@ -3,6 +3,8 @@ import "styles/globalStyles.css";
 import React from "react";
 
 import MainLandingPage from "MainLandingPage.js";
+import LoginPage from "pages/Login.js";
+import SignupPage from "pages/Signup.js";
 import GamePage from "pages/GamePage.js";
 import NewGamePage from "pages/NewGamePage.js";
 
@@ -15,6 +17,8 @@ export default function App() {
   return (
     <Router>
       <Switch>
+        <Route path="/login" component={LoginPage}/>
+        <Route path="/signup" component={SignupPage}/>
         <Route path="/games/:id" component={GamePage}/>
         <Route path="/newGame" component={NewGamePage}/>
         <Route path="/">

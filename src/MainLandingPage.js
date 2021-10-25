@@ -66,11 +66,11 @@ export default function App() {
         navLinks={[
           {
             textContent: 'Games',
-            url: '#'
+            url: '/games'
           },
           {
             textContent: 'Game Jams',
-            url: '#'
+            url: '/gameJams'
           },
           {
             textContent: 'Publicar Game',
@@ -79,7 +79,7 @@ export default function App() {
         ]}
         primaryLink={{
           textContent: 'Sign Up',
-          url: '#'
+          url: '/signUp'
         }}
       />
       {/* TabGrid Component also accepts a tabs prop to customize the tabs and its content directly. Please open the TabGrid component file to see the structure of the tabs props.*/}

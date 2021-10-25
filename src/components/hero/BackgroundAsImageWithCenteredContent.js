@@ -47,7 +47,7 @@ export default (props) => {
       })}
     </NavLinks>,
     <NavLinks key={2}>
-      <NavLink href="/#" tw="lg:ml-12!">
+      <NavLink href="/login" tw="lg:ml-12!">
         Login
       </NavLink>,
       <PrimaryLink href={props.primaryLink.url}>
