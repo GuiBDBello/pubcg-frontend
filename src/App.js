@@ -4,6 +4,7 @@ import React from "react";
 
 import MainLandingPage from "MainLandingPage.js";
 import GamePage from "pages/GamePage.js";
+import NewGamePage from "pages/NewGamePage.js";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -15,6 +16,7 @@ export default function App() {
     <Router>
       <Switch>
         <Route path="/games/:id" component={GamePage}/>
+        <Route path="/newGame" component={NewGamePage}/>
         <Route path="/">
           <MainLandingPage />
         </Route>

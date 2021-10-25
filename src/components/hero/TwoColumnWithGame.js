@@ -7,7 +7,7 @@ import { css } from "styled-components/macro";
 import Header from "../headers/light.js";
 
 import ReactModalAdapter from "../../helpers/ReactModalAdapter.js";
-import ResponsiveVideoEmbed from "../../helpers/ResponsiveVideoEmbed.js";
+import ResponsiveGameEmbed from "../../helpers/ResponsiveGameEmbed.js";
 
 import { ReactComponent as PlayIcon } from "feather-icons/dist/icons/play-circle.svg";
 import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
@@ -63,8 +63,8 @@ export default ({
   description = "Game Description.",
   primaryButtonText = "Donate",
   primaryButtonUrl = "#",
-  watchVideoButtonText = "Play Game",
-  watchVideoYoutubeUrl = "https://www.youtube.com/embed/_GuOjXYl5ew",
+  playGameButtonText = "Play Game",
+  playGameUrl = `${process.env.REACT_APP_API_ENDPOINT}/games/1`,
   imageSrc = DesignIllustration,
   imageCss = null,
   imageDecoratorBlob = false,
@@ -87,7 +87,7 @@ export default ({
                 <span className="playIconContainer">
                   <PlayIcon className="playIcon" />
                 </span>
-                <span className="playText">{watchVideoButtonText}</span>
+                <span className="playText">{playGameButtonText}</span>
               </WatchVideoButton>
             </Actions>
           </LeftColumn>
@@ -114,7 +114,7 @@ export default ({
             <CloseIcon tw="w-6 h-6" />
           </CloseModalButton>
           <div className="content">
-            <ResponsiveVideoEmbed url={watchVideoYoutubeUrl} tw="w-full" />
+            <ResponsiveGameEmbed url={playGameUrl} tw="w-full" />
           </div>
         </StyledModal>
       </Container>
