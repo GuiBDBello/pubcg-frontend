@@ -1,7 +1,7 @@
 import "tailwindcss/dist/base.css";
 import "styles/globalStyles.css";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import tw from "twin.macro";
 
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
@@ -15,22 +15,27 @@ export default function App() {
 
   const HighlightedText = tw.span`bg-primary-500 text-gray-100 px-4 transform -skew-x-12 inline-block`;
 
-  const [tabs, setTabs] = useState([]);
+  const [tabs, setTabs] = useState({
+    Destaques: [],
+    "Mais Jogados": [],
+    Aleatório: []
+  });
 
   useEffect(() => {
     async function loadGames() {
-      let games = await fetch(`http://localhost:8080/games`)
+      let games = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/games`)
         .then((response) => {
           return response.json();
         })
         .catch((error) => {
-          console.error('Failed to fetch games.');
+          console.error('Failed to fetch games.', error);
           return [];
         });
 
       let gamesFormatted = games.map(game => {
+        console.log('game', game);
         return {
-          imageSrc: '',//game.logo.data,
+          imageSrc: game.logo,
           title: game.name,
           content: game.description,
           price: 'Free',
@@ -39,13 +44,13 @@ export default function App() {
           url: `games/${game.id}`
         }
       })
-      console.log(gamesFormatted);
+      // console.log(gamesFormatted);
 
       if (gamesFormatted) {
         setTabs({
           Destaques: gamesFormatted,
           "Mais Jogados": [],
-          Aleatório: []
+          Aleatório: gamesFormatted.slice().sort(() => Math.random() - 0.5)
         });
       }
     }
@@ -60,20 +65,20 @@ export default function App() {
         primaryButtonText="Confira nossos Games"
         navLinks={[
           {
-            textContent: 'Veja nossos Games',
+            textContent: 'Games',
             url: '#'
           },
           {
-            textContent: 'Participe de Game Jams',
+            textContent: 'Game Jams',
             url: '#'
           },
           {
-            textContent: 'Publique seu Game',
-            url: '#'
+            textContent: 'Publicar Game',
+            url: '/newGame'
           }
         ]}
         primaryLink={{
-          textContent: 'Login / Sign Up',
+          textContent: 'Sign Up',
           url: '#'
         }}
       />
@@ -81,10 +86,11 @@ export default function App() {
       <TabGrid
         heading={
           <>
-            Confira nossos <HighlightedText>GAMES.</HighlightedText>
+            Confira nossos <HighlightedText>GAMES</HighlightedText>
           </>
         }
         tabs={tabs}
+        cardButtonTextContent={"Página do Game"}
       />
       <Footer />
     </AnimationRevealPage>

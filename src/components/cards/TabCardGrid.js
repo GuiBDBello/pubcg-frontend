@@ -146,7 +146,8 @@ export default ({
     Main: getRandomCards(),
     Soup: getRandomCards(),
     Desserts: getRandomCards()
-  }
+  },
+  cardButtonTextContent="Buy Now"
 }) => {
   /*
    * To customize the tabs, pass in data using the `tabs` prop. It should be an object which contains the name of the tab
@@ -213,7 +214,7 @@ export default ({
                       }}
                       transition={{ duration: 0.3 }}
                     >
-                      <CardButton>Buy Now</CardButton>
+                      <CardButton>{cardButtonTextContent}</CardButton>
                     </CardHoverOverlay>
                   </CardImageContainer>
                   <CardText>
