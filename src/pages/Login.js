@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import { Container as ContainerBase } from "components/misc/Layouts";
 import tw from "twin.macro";
 import styled from "styled-components";
-import {css} from "styled-components/macro"; //eslint-disable-line
-import illustration from "images/login-illustration.svg";
+import { css } from "styled-components/macro"; //eslint-disable-line
 import logo from "images/logo.png";
 import { ReactComponent as LoginIcon } from "feather-icons/dist/icons/log-in.svg";
 
@@ -31,55 +32,103 @@ const SubmitButton = styled.button`
 const IllustrationContainer = tw.div`sm:rounded-r-lg flex-1 bg-purple-100 text-center hidden lg:flex justify-center`;
 const IllustrationImage = styled.div`
   ${props => `background-image: url("${props.imageSrc}");`}
-  ${tw`m-12 xl:m-16 w-full max-w-sm bg-contain bg-center bg-no-repeat`}
+  ${tw`m-12 xl:m-16 w-full max-w-lg bg-contain bg-center bg-no-repeat`}
 `;
+
+const image = `${process.env.REACT_APP_PUBLIC_DIR}/images/games-01.svg`;
 
 export default ({
   logoLinkUrl = "/",
-  illustrationImageSrc = illustration,
-  headingText = "Entrar no PubCG",
+  illustrationImageSrc = image,
+  headingText = "Acesse sua conta",
   submitButtonText = "Entrar",
   SubmitButtonIcon = LoginIcon,
-  forgotPasswordUrl = "#",
+  // forgotPasswordUrl = "#",
   signupUrl = "signup",
 
-}) => (
-  <AnimationRevealPage>
-    <Container>
-      <Content>
-        <MainContainer>
-          <LogoLink href={logoLinkUrl}>
-            <LogoImage src={logo} />
-          </LogoLink>
-          <MainContent>
-            <Heading>{headingText}</Heading>
-            <FormContainer>
-              <Form>
-                <Input type="email" placeholder="Email" />
-                <Input type="password" placeholder="Password" />
-                <SubmitButton type="submit">
-                  <SubmitButtonIcon className="icon" />
-                  <span className="text">{submitButtonText}</span>
-                </SubmitButton>
-              </Form>
-              {/* <p tw="mt-6 text-xs text-gray-600 text-center">
+}) => {
+
+  const [email, setEmail] = useState("gdb@hubcg.gg");
+
+  let history = useHistory();
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    await fetch(`${process.env.REACT_APP_API_ENDPOINT}/login`, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email })
+    }).then(response => {
+      console.log(response);
+      if (response.ok) {
+        return response.json();
+      } else if (response.status === 401) {
+        alert("Oops!");
+        return response.json();
+      }
+    }).then(user => {
+      localStorage.setItem("userLoggedIn", user.id);
+      history.push(`/users/${user.id}`);
+    }).catch(error => {
+      alert(error);
+      return error;
+    });
+  }
+
+  function handleEmail(e) {
+    console.log(e.target.value);
+    setEmail(e.target.value);
+  }
+
+  return (
+    <AnimationRevealPage>
+      <Container>
+        <Content>
+          <MainContainer>
+            <LogoLink href={logoLinkUrl}>
+              <LogoImage src={logo} />
+            </LogoLink>
+            <MainContent>
+              <Heading>{headingText}</Heading>
+              <FormContainer>
+                <Form onSubmit={handleSubmit}>
+                  <Input
+                    id="email-input"
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={handleEmail}
+                  />
+                  {/* <Input type="password" placeholder="Password" /> */}
+                  <SubmitButton type="submit">
+                    <SubmitButtonIcon className="icon" />
+                    <span className="text">{submitButtonText}</span>
+                  </SubmitButton>
+                </Form>
+                {/* <p tw="mt-6 text-xs text-gray-600 text-center">
                 <a href={forgotPasswordUrl} tw="border-b border-gray-500 border-dotted">
                   Forgot Password ?
                 </a>
               </p> */}
-              <p tw="mt-8 text-sm text-gray-600 text-center">
-                Não possui uma conta?{" "}
-                <a href={signupUrl} tw="border-b border-gray-500 border-dotted">
-                  Criar Conta
-                </a>
-              </p>
-            </FormContainer>
-          </MainContent>
-        </MainContainer>
-        <IllustrationContainer>
-          <IllustrationImage imageSrc={illustrationImageSrc} />
-        </IllustrationContainer>
-      </Content>
-    </Container>
-  </AnimationRevealPage>
-);
+                <p tw="mt-8 text-sm text-gray-600 text-center">
+                  Não possui uma conta?{" "}
+                  <a href={signupUrl} tw="border-b border-gray-500 border-dotted">
+                    Cadastrar-se
+                  </a>
+                </p>
+              </FormContainer>
+            </MainContent>
+          </MainContainer>
+          <IllustrationContainer>
+            <IllustrationImage imageSrc={illustrationImageSrc} />
+          </IllustrationContainer>
+        </Content>
+      </Container>
+    </AnimationRevealPage>
+  )
+};

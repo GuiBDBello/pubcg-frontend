@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import { Container as ContainerBase } from "components/misc/Layouts";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
-import illustration from "images/signup-illustration.svg";
 import logo from "images/logo.png";
 import { ReactComponent as SignUpIcon } from "feather-icons/dist/icons/user-plus.svg";
+
+import { SectionHeading as HeadingBase } from "components/misc/Headings";
+import { SectionDescription as DescriptionBase } from "components/misc/Typography";
+
+import { useHistory } from "react-router-dom";
 
 const Container = tw(ContainerBase)`min-h-screen bg-primary-900 text-white font-medium flex justify-center -m-8`;
 const Content = tw.div`max-w-screen-xl m-0 sm:mx-20 sm:my-16 bg-white text-gray-900 shadow sm:rounded-lg flex justify-center flex-1`;
@@ -34,34 +38,87 @@ const IllustrationImage = styled.div`
   ${tw`m-12 xl:m-16 w-full max-w-lg bg-contain bg-center bg-no-repeat`}
 `;
 
+const image = `${process.env.REACT_APP_PUBLIC_DIR}/images/games-02.svg`;
+
+const HeadingError = tw(HeadingBase)`text-center text-primary-900 leading-snug`;
+const Description = tw(DescriptionBase)`mt-4 text-center lg:text-base text-gray-700 max-w-lg mx-auto lg:mx-0`;
+
 export default ({
   logoLinkUrl = "/",
-  illustrationImageSrc = illustration,
-  headingText = "Criar Conta no PubCG",
-  submitButtonText = "Criar Conta",
+  illustrationImageSrc = image,
+  headingText = "Cadastre sua conta",
+  submitButtonText = "Cadastrar",
   SubmitButtonIcon = SignUpIcon,
   // tosUrl = "#",
   // privacyPolicyUrl = "#",
   signInUrl = "/login"
-}) => (
-  <AnimationRevealPage>
-    <Container>
-      <Content>
-        <MainContainer>
-          <LogoLink href={logoLinkUrl}>
-            <LogoImage src={logo} />
-          </LogoLink>
-          <MainContent>
-            <Heading>{headingText}</Heading>
-            <FormContainer>
-              <Form>
-                <Input type="email" placeholder="Email" />
-                <Input type="password" placeholder="Password" />
-                <SubmitButton type="submit">
-                  <SubmitButtonIcon className="icon" />
-                  <span className="text">{submitButtonText}</span>
-                </SubmitButton>
-                {/* <p tw="mt-6 text-xs text-gray-600 text-center">
+}) => {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [photo, setPhoto] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  let history = useHistory();
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const body = {
+      email: email,
+      name: name,
+      photo: photo
+    }
+    await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.errors) {
+          setErrorMessage(data.errors[0].message);
+        } else {
+          history.push("/");
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  return (
+    <AnimationRevealPage>
+      <Container>
+        <Content>
+          <MainContainer>
+            <LogoLink href={logoLinkUrl}>
+              <LogoImage src={logo} />
+            </LogoLink>
+            <MainContent>
+              <Heading>{headingText}</Heading>
+              <FormContainer>
+                <Form onSubmit={handleSubmit}>
+                  <Input
+                    type="email"
+                    placeholder="Email"
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <Input
+                    type="text"
+                    placeholder="Nome"
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                  <Input
+                    type="file"
+                    placeholder="Foto"
+                    onChange={(e) => setPhoto(e.target.value)}
+                  />
+                  {/* <Input type="password" placeholder="Password" /> */}
+                  <SubmitButton type="submit">
+                    <SubmitButtonIcon className="icon" />
+                    <span className="text">{submitButtonText}</span>
+                  </SubmitButton>
+                  <HeadingError>{errorMessage}</HeadingError>
+                  {/* <p tw="mt-6 text-xs text-gray-600 text-center">
                   I agree to abide by treact's{" "}
                   <a href={tosUrl} tw="border-b border-gray-500 border-dotted">
                     Terms of Service
@@ -72,20 +129,21 @@ export default ({
                   </a>
                 </p> */}
 
-                <p tw="mt-8 text-sm text-gray-600 text-center">
-                  Já possui uma conta?{" "}
-                  <a href={signInUrl} tw="border-b border-gray-500 border-dotted">
-                    Entrar no PubCG
-                  </a>
-                </p>
-              </Form>
-            </FormContainer>
-          </MainContent>
-        </MainContainer>
-        <IllustrationContainer>
-          <IllustrationImage imageSrc={illustrationImageSrc} />
-        </IllustrationContainer>
-      </Content>
-    </Container>
-  </AnimationRevealPage>
-);
+                  <p tw="mt-8 text-sm text-gray-600 text-center">
+                    Já possui uma conta?{" "}
+                    <a href={signInUrl} tw="border-b border-gray-500 border-dotted">
+                      Entrar
+                    </a>
+                  </p>
+                </Form>
+              </FormContainer>
+            </MainContent>
+          </MainContainer>
+          <IllustrationContainer>
+            <IllustrationImage imageSrc={illustrationImageSrc} />
+          </IllustrationContainer>
+        </Content>
+      </Container>
+    </AnimationRevealPage>
+  );
+}

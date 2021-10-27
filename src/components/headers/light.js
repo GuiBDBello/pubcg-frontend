@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+
 import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -70,15 +72,56 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
    * changing the defaultLinks variable below below.
    * If you manipulate links here, all the styling on the links is already done for you. If you pass links yourself though, you are responsible for styling the links or use the helper styled components that are defined here (NavLink)
    */
+  const [userLoggedIn, setUserLoggedIn] = useState(0);
+  const [userName, setUserName] = useState("");
+
+  let history = useHistory();
+
+  useEffect(() => {
+    setUserLoggedIn(localStorage.getItem("userLoggedIn"));
+
+    async function getUserEmail() {
+      await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users/${userLoggedIn}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.name) setUserName(data.name)
+        })
+        .catch(error => console.log(error));
+    }
+
+    if (userLoggedIn !== 0) {
+      getUserEmail();
+    }
+  }, [userLoggedIn]);
+
+  function handleLogout() {
+    localStorage.setItem("userLoggedIn", 0);
+    setUserLoggedIn(0);
+    history.push("/");
+  }
+
   const defaultLinks = [
     <NavLinks key={1}>
-      <NavLink href="/#">Games</NavLink>
-      <NavLink href="/#">Game Jams</NavLink>
+      <NavLink href="/games">Games</NavLink>
+      <NavLink href="/gameJams">Game Jams</NavLink>
       <NavLink href="/newGame">Publicar Game</NavLink>
-      <NavLink href="/#" tw="lg:ml-12!">
-        Login
-      </NavLink>
-      <PrimaryLink css={roundedHeaderButton && tw`rounded-full`}href="/#">Sign Up</PrimaryLink>
+      {(userLoggedIn !== "0") ?
+        <>
+          <NavLink href={`/users/${userLoggedIn}`} tw="lg:ml-12!">
+            Olá, {userName}
+          </NavLink>
+          <PrimaryLink onClick={handleLogout}>
+            Sair
+          </PrimaryLink>
+        </>
+        :
+        <>
+          <NavLink href="/login" tw="lg:ml-12!">
+            Entrar
+          </NavLink>
+          <PrimaryLink css={roundedHeaderButton && tw`rounded-full`} href="/signup">Cadastrar-se</PrimaryLink>
+        </>
+      }
     </NavLinks>
   ];
 
