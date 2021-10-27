@@ -7,7 +7,7 @@ import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import Footer from "components/footers/MiniCenteredFooter.js";
 import Hero from "components/hero/TwoColumnWithGame";
 
-export default function App(props) {
+export default function GamePage(props) {
 
     const [game, setGame] = useState({});
 

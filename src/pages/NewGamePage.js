@@ -8,7 +8,7 @@ import Footer from "components/footers/MiniCenteredFooter.js";
 import GameForm from "components/forms/PublishGameForm";
 import Header from "../components/headers/light.js";
 
-export default function App() {
+export default function NewGamePage() {
 
     return (
         <>

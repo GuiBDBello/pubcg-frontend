@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { useHistory } from "react-router-dom";
+
 import styled from "styled-components";
 import tw from "twin.macro";
 import { css } from "styled-components/macro"; //eslint-disable-line
@@ -36,11 +38,46 @@ const SvgDotPattern1 = tw(SvgDotPatternIcon)`absolute bottom-0 right-0 transform
 
 export default () => {
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [logo, setLogo] = useState(null);
-  const [media, setMedia] = useState(null);
-  const [file, setFile] = useState(null);
+  const [name, setName] = useState("Sample Game");
+  const [description, setDescription] = useState("Lorem Ipsum");
+  const logo = useRef(null);
+  const media = useRef(null);
+  const file = useRef(null);
+
+  let history = useHistory();
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    const data = new FormData();
+    data.append("name", name);
+    data.append("description", description);
+    data.append("logo", logo.current.files[0]);
+    data.append("media", media.current.files[0]);
+    data.append("file", file.current.files[0]);
+
+    console.log('logo', logo.current.files);
+    console.log('media', media.current.files);
+    console.log('file', file.current.files);
+
+    await fetch(`${process.env.REACT_APP_API_ENDPOINT}/games`, {
+      method: "POST",
+      // headers: { "Content-Type": "multipart/form-data" },
+      body: data
+    }).then(response => {
+      if (response.ok) {
+        return response.json();
+      } else if (response.status === 401) {
+        alert("Oops!");
+        return response.json();
+        // error
+      }
+    }).then(game => {
+      // history.push(`/games/${game.id}`);
+      console.log(game);
+      history.push(`/games/${game.id}`);
+    });
+  }
 
   return (
     <Container>
@@ -49,9 +86,7 @@ export default () => {
           <div tw="mx-auto max-w-4xl">
             <h2>Publicar Game</h2>
             <form
-              method="post"
-              enctype="multipart/form-data"
-              action={`${process.env.REACT_APP_API_ENDPOINT}/games`}
+              onSubmit={handleSubmit}
             >
               <TwoColumn>
                 <Column>
@@ -61,7 +96,7 @@ export default () => {
                       id="name-input"
                       type="text"
                       name="name"
-                      placeholder="Nome do meu Game"
+                      placeholder="Nome do Game"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                     />
@@ -85,8 +120,7 @@ export default () => {
                       type="file"
                       name="logo"
                       placeholder="Logo de seu Game."
-                      value={logo}
-                      onChange={(e) => setLogo(e.target.value)}
+                      ref={logo}
                     />
                   </InputContainer>
                   <InputContainer>
@@ -96,8 +130,8 @@ export default () => {
                       type="file"
                       name="media"
                       placeholder="Imagens de seu Game."
-                      value={media}
-                      onChange={(e) => setMedia(e.target.value)}
+                      ref={media}
+                      multiple
                     />
                   </InputContainer>
                 </Column>
@@ -109,16 +143,11 @@ export default () => {
                   type="file"
                   name="file"
                   placeholder="Suba o arquivo compactado de seu Game."
-                  value={file}
-                  onChange={(e) => setFile(e.target.value)}
+                  ref={file}
                 />
               </InputContainer>
 
-              <SubmitButton
-                type="submit"
-                value="Submit"
-                onClick={(e) => e.preventDefault}
-              >
+              <SubmitButton type="submit" value="Submit">
                 Enviar
               </SubmitButton>
             </form>
