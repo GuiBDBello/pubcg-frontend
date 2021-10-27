@@ -5,6 +5,8 @@ import React, { useState, useEffect } from "react";
 import tw from "twin.macro";
 
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
+import Faq from "components/faqs/SingleCol";
+import Features from "components/features/TwoColWithSteps";
 import Footer from "components/footers/MiniCenteredFooter.js";
 import Hero from "components/hero/BackgroundAsImageWithCenteredContent.js";
 import TabGrid from "components/cards/TabCardGrid.js";
@@ -48,9 +50,15 @@ export default function App() {
 
       if (gamesFormatted) {
         setTabs({
-          Destaques: gamesFormatted,
-          "Mais Jogados": [],
-          Aleatório: gamesFormatted.slice().sort(() => Math.random() - 0.5)
+          Destaques: gamesFormatted.slice(0, 8),
+          "Mais Jogados": gamesFormatted
+            .slice()
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 8),
+          Aleatório: gamesFormatted
+            .slice()
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 8)
         });
       }
     }
@@ -59,7 +67,7 @@ export default function App() {
   }, []);
 
   return (
-    <AnimationRevealPage>
+    <AnimationRevealPage disabled={false}>
       <Hero
         heading={<>Descubra o próximo<br />sucesso da Indústria de<br />Games na <HighlightedText>PubCG</HighlightedText></>}
         primaryButtonText="Confira nossos Games"
@@ -78,10 +86,11 @@ export default function App() {
           }
         ]}
         primaryLink={{
-          textContent: 'Sign Up',
+          textContent: 'Cadastrar-se',
           url: '/signUp'
         }}
       />
+
       {/* TabGrid Component also accepts a tabs prop to customize the tabs and its content directly. Please open the TabGrid component file to see the structure of the tabs props.*/}
       <TabGrid
         heading={
@@ -91,6 +100,93 @@ export default function App() {
         }
         tabs={tabs}
         cardButtonTextContent={"Página do Game"}
+      />
+
+      <Features
+        subheading="Desenvolvedores de Games"
+        heading={
+          <>
+            Feito para <span tw="text-primary-500">Desenvolvedores</span>
+          </>
+        }
+        imageSrc={`${process.env.REACT_APP_PUBLIC_DIR}/images/dev-02.svg`}
+        imageRounded={true}
+        imageBorder={false}
+        imageShadow={false}
+        imageDecoratorBlob={false}
+        textOnLeft={true}
+        steps={[
+          {
+            heading: "Cadastre-se",
+            description: "Crie sua conta cadastrando seu e-mail e senha."
+          },
+          {
+            heading: "Publique",
+            description: "Disponibilize um protótipo, versão beta ou vertical slice de seu jogo."
+          },
+          {
+            heading: "Ganhe",
+            description: "Receba feedbacks dos Gamers da plataforma para analisar e melhorar seus jogos."
+          }
+        ]}
+        decoratorBlobCss={null}
+      />
+      <Features
+        subheading="Gamers"
+        heading={
+          <>
+            E também para <span tw="text-primary-500">Gamers</span>
+          </>
+        }
+        imageSrc={`${process.env.REACT_APP_PUBLIC_DIR}/images/games-05.svg`}
+        imageRounded={true}
+        imageBorder={false}
+        imageShadow={false}
+        imageDecoratorBlob={false}
+        textOnLeft={false}
+        steps={[
+          {
+            heading: "Cadastre-se",
+            description: "Crie sua conta cadastrando seu e-mail e senha."
+          },
+          {
+            heading: "Jogue",
+            description: "Jogue diretamente na plataforma!"
+          },
+          {
+            heading: "Ganhe",
+            description: "Receba pontos de experiência para seu perfil e moedas para resgatar recompensas."
+          }
+        ]}
+        decoratorBlobCss={null}
+      />
+
+      <Faq
+        subheading="FAQs"
+        heading="Dúvidas?"
+        description="Temos as respostas!"
+        faqs={[
+          {
+            question: "Qual o custo para jogar ou publicar Games?",
+            answer:
+              "A plataforma é de uso totalmente gratuito."
+          },
+          {
+            question: "O que recebo em troca por publicar meus Games?",
+            answer:
+              "Para auxiliar os desenvolvedores, estimulamos que os Gamers realizem doações para que os Desenvolvedores tenham fundos suficientes para finalizar o desenvolvimento dos Games publicados."
+          },
+          {
+            question: "O que recebo em troca por jogar e publicar feedbacks?",
+            answer:
+              "Pontos de experiência para seu perfil e moedas da plataforma."
+          },
+          {
+            question: "Que recompensas eu posso resgatar com as moedas recebidos ao jogar?",
+            answer:
+              "Imagens de perfil customizadas, medalhas para exibir em seu perfil, etc."
+          }
+        ]}
       />
       <Footer />
     </AnimationRevealPage>
