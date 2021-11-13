@@ -8,7 +8,7 @@ import logo from "images/logo.png";
 import { ReactComponent as SignUpIcon } from "feather-icons/dist/icons/user-plus.svg";
 
 import { SectionHeading as HeadingBase } from "components/misc/Headings";
-import { SectionDescription as DescriptionBase } from "components/misc/Typography";
+// import { SectionDescription as DescriptionBase } from "components/misc/Typography";
 
 import { useHistory } from "react-router-dom";
 
@@ -41,7 +41,7 @@ const IllustrationImage = styled.div`
 `;
 
 const HeadingError = tw(HeadingBase)`text-center text-primary-900 leading-snug`;
-const Description = tw(DescriptionBase)`mt-4 text-center lg:text-base text-gray-700 max-w-lg mx-auto lg:mx-0`;
+// const Description = tw(DescriptionBase)`mt-4 text-center lg:text-base text-gray-700 max-w-lg mx-auto lg:mx-0`;
 
 export default ({
   logoLinkUrl = "/",
