@@ -9,6 +9,8 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 import logo from "images/logo.png";
 import { ReactComponent as LoginIcon } from "feather-icons/dist/icons/log-in.svg";
 
+import image from "../images/games-01.svg";
+
 const Container = tw(ContainerBase)`min-h-screen bg-primary-900 text-white font-medium flex justify-center -m-8`;
 const Content = tw.div`max-w-screen-xl m-0 sm:mx-20 sm:my-16 bg-white text-gray-900 shadow sm:rounded-lg flex justify-center flex-1`;
 const MainContainer = tw.div`lg:w-1/2 xl:w-5/12 p-6 sm:p-12`;
@@ -34,8 +36,6 @@ const IllustrationImage = styled.div`
   ${props => `background-image: url("${props.imageSrc}");`}
   ${tw`m-12 xl:m-16 w-full max-w-lg bg-contain bg-center bg-no-repeat`}
 `;
-
-const image = `${process.env.REACT_APP_PUBLIC_DIR}/images/games-01.svg`;
 
 export default ({
   logoLinkUrl = "/",

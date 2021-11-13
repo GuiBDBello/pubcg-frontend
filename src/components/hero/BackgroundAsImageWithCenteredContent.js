@@ -7,6 +7,8 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 
 import Header, { NavLink, NavLinks, PrimaryLink as PrimaryLinkBase, LogoLink, NavToggle, DesktopNavLinks } from "../headers/light.js";
 
+import backgroundImage from "../../images/background-02.jpg";
+
 const StyledHeader = styled(Header)`
   ${tw`pt-8 max-w-none w-full`}
   ${DesktopNavLinks} ${NavLink}, ${LogoLink} {
@@ -16,8 +18,6 @@ const StyledHeader = styled(Header)`
     ${tw`text-gray-100 hover:text-primary-500`}
   }
 `;
-
-const backgroundImage = process.env.REACT_APP_PUBLIC_DIR + "/images/background-02.jpg";
 
 const PrimaryLink = tw(PrimaryLinkBase)`rounded-full`
 const Container = styled.div`

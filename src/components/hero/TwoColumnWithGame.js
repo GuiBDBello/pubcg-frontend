@@ -61,9 +61,9 @@ const CloseModalButton = tw.button`absolute top-0 right-0 mt-8 mr-8 hocus:text-p
 export default ({
   heading = "Game Name",
   description = "Game Description.",
-  primaryButtonText = "Donate",
+  primaryButtonText = "Apoiar",
   primaryButtonUrl = "#",
-  playGameButtonText = "Play Game",
+  playGameButtonText = "Jogar",
   playGameUrl = `${process.env.REACT_APP_API_ENDPOINT}/games/1`,
   imageSrc = DesignIllustration,
   imageCss = null,

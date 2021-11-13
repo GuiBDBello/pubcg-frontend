@@ -11,6 +11,9 @@ import Footer from "components/footers/MiniCenteredFooter.js";
 import Hero from "components/hero/BackgroundAsImageWithCenteredContent.js";
 import TabGrid from "components/cards/TabCardGrid.js";
 
+import Feature1Image from "./images/dev-02.svg";
+import Feature2Image from "./images/games-05.svg";
+
 export default function App() {
   // If you want to disable the animation just use the disabled `prop` like below on your page's component
   // return <AnimationRevealPage disabled>xxxxxxxxxx</AnimationRevealPage>;
@@ -51,9 +54,10 @@ export default function App() {
       if (gamesFormatted) {
         setTabs({
           Destaques: gamesFormatted.slice(0, 8),
-          "Mais Jogados": gamesFormatted
+          // "Mais Jogados": [],
+          Novos: gamesFormatted
             .slice()
-            .sort(() => Math.random() - 0.5)
+            .reverse()
             .slice(0, 8),
           Aleatório: gamesFormatted
             .slice()
@@ -109,7 +113,7 @@ export default function App() {
             Feito para <span tw="text-primary-500">Desenvolvedores</span>
           </>
         }
-        imageSrc={`${process.env.REACT_APP_PUBLIC_DIR}/images/dev-02.svg`}
+        imageSrc={Feature1Image}
         imageRounded={true}
         imageBorder={false}
         imageShadow={false}
@@ -138,7 +142,7 @@ export default function App() {
             E também para <span tw="text-primary-500">Gamers</span>
           </>
         }
-        imageSrc={`${process.env.REACT_APP_PUBLIC_DIR}/images/games-05.svg`}
+        imageSrc={Feature2Image}
         imageRounded={true}
         imageBorder={false}
         imageShadow={false}
