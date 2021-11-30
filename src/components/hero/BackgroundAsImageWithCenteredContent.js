@@ -42,7 +42,7 @@ const PrimaryAction = tw.button`rounded-full px-8 py-3 mt-10 text-sm sm:text-bas
 export default (props) => {
   const [userLoggedIn, setUserLoggedIn] = useState(0);
   const [userName, setUserName] = useState("");
-  
+
   let history = useHistory();
 
   useEffect(() => {
@@ -52,9 +52,14 @@ export default (props) => {
       await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users/${userLoggedIn}`)
         .then(response => response.json())
         .then(data => {
-          if (data.name) setUserName(data.name)
+          if (data.name) {
+            setUserName(data.name);
+          }
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+          localStorage.setItem("userLoggedIn", 0);
+          // console.log(error);
+        });
     }
 
     if (userLoggedIn !== 0) {
@@ -70,9 +75,9 @@ export default (props) => {
 
   const navLinks = [
     <NavLinks key={1}>
-      {props.navLinks.map((navLink) => {
+      {props.navLinks.map((navLink, index) => {
         return (
-          <NavLink href={navLink.url}>
+          <NavLink key={index} href={navLink.url}>
             {navLink.textContent}
           </NavLink>
         );

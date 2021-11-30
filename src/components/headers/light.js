@@ -13,6 +13,7 @@ import { ReactComponent as MenuIcon } from "feather-icons/dist/icons/menu.svg";
 import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
 
 const Header = tw.header`
+  pb-8
   flex justify-between items-center
   max-w-screen-xl mx-auto
 `;
@@ -84,9 +85,14 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
       await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users/${userLoggedIn}`)
         .then(response => response.json())
         .then(data => {
-          if (data.name) setUserName(data.name)
+          if (data.name) {
+            setUserName(data.name);
+          }
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+          localStorage.setItem("userLoggedIn", 0);
+          // console.log(error);
+        });
     }
 
     if (userLoggedIn !== 0) {
@@ -110,7 +116,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
           <NavLink href={`/users/${userLoggedIn}`} tw="lg:ml-12!">
             Olá, {userName}
           </NavLink>
-          <PrimaryLink onClick={handleLogout}>
+          <PrimaryLink css={roundedHeaderButton && tw`rounded-full`} onClick={handleLogout}>
             Sair
           </PrimaryLink>
         </>
