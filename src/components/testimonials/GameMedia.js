@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
 import tw from "twin.macro";
@@ -64,7 +64,7 @@ export default ({
 }) => {
   // useState is used instead of useRef below because we want to re-render when sliderRef becomes available (not null)
   const [imageSliderRef, setImageSliderRef] = useState(null);
-  const [textSliderRef, setTextSliderRef] = useState(null);
+  // const [textSliderRef, setTextSliderRef] = useState(null);
 
   return (
     <Container>
@@ -74,7 +74,7 @@ export default ({
           <Testimonials>
             <Testimonial>
               {medias.length > 0 ? (
-                <TestimonialImageSlider arrows={false} ref={setImageSliderRef} asNavFor={textSliderRef} fade={true}>
+                <TestimonialImageSlider arrows={false} ref={setImageSliderRef} asNavFor={null} fade={true}>
                   {medias.map((media, index) => (
                     <ImageAndControlContainer key={index}>
                       <Image imageSrc={media.file} />

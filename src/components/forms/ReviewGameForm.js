@@ -26,15 +26,15 @@ const CustomerTextInfo = tw.div`text-center lg:text-left sm:ml-6 mt-2 sm:mt-0`;
 const CustomerName = tw.h5`font-semibold text-xl lg:text-2xl xl:text-3xl text-primary-500`;
 const CustomerTitle = tw.p`font-medium text-secondary-100`;
 
-const Image = styled.div(props => [
-  `background-image: url("${props.imageSrc}");`,
-  tw`rounded bg-contain bg-no-repeat bg-center h-full`,
-]);
+// const Image = styled.div(props => [
+//   `background-image: url("${props.imageSrc}");`,
+//   tw`rounded bg-contain bg-no-repeat bg-center h-full`,
+// ]);
 const TextContent = tw.div`lg:pt-8 text-center md:text-left`;
 
 const Subheading = tw(SubheadingBase)`text-center md:text-left`;
 const Heading = tw(SectionHeading)`mt-4 font-black text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-left leading-tight`;
-const Description = tw.p`mt-4 text-center md:text-left text-sm md:text-base lg:text-lg font-medium leading-relaxed text-secondary-100`
+// const Description = tw.p`mt-4 text-center md:text-left text-sm md:text-base lg:text-lg font-medium leading-relaxed text-secondary-100`
 
 const Form = tw.form`md:mt-10 text-sm`
 const SubmitButton = tw(PrimaryButtonBase)`inline-block mt-6 max-w-xs float-right`

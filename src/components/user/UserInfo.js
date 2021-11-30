@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
 import { Container as ContainerBase, ContentWithPaddingXl as ContentBase } from "components/misc/Layouts.js";
 
-import DefaultUserImageSrc from "./../../images/user-6.jpg";
 import { ReactComponent as SvgDotPattern } from "../../images/dot-pattern.svg";
 
 const Container = tw(ContainerBase)`bg-primary-900 text-gray-100 -mx-8`;
