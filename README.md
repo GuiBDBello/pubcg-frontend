@@ -1,3 +1,16 @@
+# PubCG (frontend)
+
+Aplicação frontend desenvolvida para o Desafio de Inovação: Gaming for Life Space organizado pelo HubCG.
+
+## .env
+
+```
+REACT_APP_API_ENDPOINT=http://localhost:8080/api
+#REACT_APP_API_ENDPOINT=https://pubcg.herokuapp.com/api
+```
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Script
