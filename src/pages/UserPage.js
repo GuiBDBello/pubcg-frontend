@@ -1,30 +1,56 @@
 import "tailwindcss/dist/base.css";
 import "styles/globalStyles.css";
 
-import React from "react";
-import tw from "twin.macro";
+import React, { useEffect, useState } from "react";
 
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import Footer from "components/footers/MiniCenteredFooter.js";
 import Header from "../components/headers/light.js";
-import Cards from "../components/cards/ThreeColSlider";
-import Pricing from "../components/pricing/ThreePlansWithHalfPrimaryBackground";
-import Testimonials from "../components/testimonials/ThreeColumnWithProfileImage.js";
-
-const Container = tw.div`relative`;
+import GameCards from "../components/cards/GameSlider";
+import UserInfo from "../components/user/UserInfo";
 
 export default function UserPage() {
+
+    const [user, setUser] = useState({});
+
+    useEffect(() => {
+        async function loadUser() {
+            let userId = localStorage.getItem("userLoggedIn");
+            console.log(userId);
+
+            if (!userId || userId <= 0) return {};
+
+            let user = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users/${userId}`)
+                .then((response) => {
+                    return response.json();
+                })
+                .catch((error) => {
+                    console.error('Failed to fetch user.', error);
+                    return {};
+                });
+
+            if (user) setUser(user);
+        }
+
+        loadUser();
+    }, []);
 
     return (
         <>
             <AnimationRevealPage>
                 <Header />
-                <Container>
-                    <Pricing />
-                    <Testimonials />
-                    <Cards />
-                    <Footer />
-                </Container>
+                <UserInfo
+                    user={user}
+                />
+                <GameCards
+                    heading="Meus Games"
+                    message="Você ainda não publicou nenhum jogo."
+                />
+                <GameCards
+                    heading="Biblioteca"
+                    message="Você ainda não jogou nenhum jogo."
+                />
+                <Footer />
             </AnimationRevealPage>
         </>
     );

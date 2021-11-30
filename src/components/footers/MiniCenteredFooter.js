@@ -57,7 +57,7 @@ export default () => {
             </SocialLink>
           </SocialLinksContainer>
           <CopyrightText>
-            &copy; Copyright 2021, HubCG. All Rights Reserved.
+            &copy; Copyright 2021, PubCG. No Rights Reserved.
           </CopyrightText>
         </Row>
       </Content>

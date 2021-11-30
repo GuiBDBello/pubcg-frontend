@@ -38,7 +38,6 @@ export default function App() {
         });
 
       let gamesFormatted = games.map(game => {
-        console.log('game', game);
         return {
           imageSrc: game.logo,
           title: game.name,
@@ -48,8 +47,7 @@ export default function App() {
           reviews: '1',
           url: `games/${game.id}`
         }
-      })
-      // console.log(gamesFormatted);
+      });
 
       if (gamesFormatted) {
         setTabs({
