@@ -7,10 +7,10 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 import { ReactComponent as SvgDotPatternIcon } from "../../images/dot-pattern.svg"
 
 const Container = tw.div`relative`;
-const Content = tw.div`max-w-screen-xl mx-auto py-20 lg:py-24`;
+const Content = tw.div`max-w-screen-xl mx-auto pb-10 lg:pb-12`;
 
 const FormContainer = styled.div`
-  ${tw`p-10 sm:p-12 md:p-16 bg-primary-700 text-gray-100 rounded-lg relative`}
+  ${tw`p-10 sm:p-12 md:p-16 bg-gradient-to-br from-primary-900 to-primary-400 text-gray-100 rounded-lg relative`}
   form {
     ${tw`mt-4`}
   }
@@ -41,8 +41,8 @@ export default () => {
   const [name, setName] = useState("Sample Game");
   const [description, setDescription] = useState("Lorem Ipsum");
   const logo = useRef(null);
-  const media = useRef(null);
   const file = useRef(null);
+  const media = useRef(null);
 
   let history = useHistory();
 
@@ -53,29 +53,57 @@ export default () => {
     data.append("name", name);
     data.append("description", description);
     data.append("logo", logo.current.files[0]);
-    data.append("media", media.current.files[0]);
     data.append("file", file.current.files[0]);
+    let mediaFiles = media.current.files;
+    for (let i = 0; i < mediaFiles.length; i++) {
+      data.append("media", mediaFiles[i]);
+    }
 
-    console.log('logo', logo.current.files);
-    console.log('media', media.current.files);
-    console.log('file', file.current.files);
+    Promise.all([
+      // First insert the game
+      await fetch(`${process.env.REACT_APP_API_ENDPOINT}/games`, {
+        method: "POST",
+        // headers: { "Content-Type": "multipart/form-data" },
+        body: data
+      }).then(response => {
+        if (response.ok) {
+          const game = response.json();
+          return game;
+        } else if (response.status === 401) {
+          alert("Oops!", response.json());
+          return response.json();
+          // error
+        }
+      }).then(game => {
+        console.log(game);
+        history.push(`/games/${game.id}`);
+      }),
 
-    await fetch(`${process.env.REACT_APP_API_ENDPOINT}/games`, {
-      method: "POST",
-      // headers: { "Content-Type": "multipart/form-data" },
-      body: data
-    }).then(response => {
-      if (response.ok) {
-        return response.json();
-      } else if (response.status === 401) {
-        alert("Oops!");
-        return response.json();
-        // error
-      }
-    }).then(game => {
+      // Second insert the media
+      // await fetch(`${process.env.REACT_APP_API_ENDPOINT}/medias`, {
+      //   method: "POST",
+      //   // headers: { "Content-Type": "multipart/form-data" },
+      //   body: mediaData
+      // }).then(response => {
+      //   console.log('medias response', response);
+      //   if (response.ok) {
+      //     const media = response.json();
+      //     console.log(media);
+
+      //     // setMediaId(media.id);
+      //     return media;
+      //   } else if (response.status === 401) {
+      //     alert("Oops!", response.json());
+      //     return response.json();
+      //     // error
+      //   }
+      // }).then(game => {
+      //   // history.push(`/games/${game.id}`);
+      //   console.log(game);
+      // }),
+    ]).then(values => {
+      console.log("values", values);
       // history.push(`/games/${game.id}`);
-      console.log(game);
-      history.push(`/games/${game.id}`);
     });
   }
 
@@ -114,7 +142,7 @@ export default () => {
                 </Column>
                 <Column>
                   <InputContainer tw="flex-1">
-                    <Label htmlFor="name-input">Logo</Label>
+                    <Label htmlFor="name-input">Logo (.jpg, .png)</Label>
                     <Input
                       id="logo-input"
                       type="file"
@@ -124,7 +152,7 @@ export default () => {
                     />
                   </InputContainer>
                   <InputContainer>
-                    <Label htmlFor="name-input">Mídia</Label>
+                    <Label htmlFor="name-input">Mídia (.jpg, .png)</Label>
                     <Input
                       id="media-input"
                       type="file"
@@ -137,7 +165,7 @@ export default () => {
                 </Column>
               </TwoColumn>
               <InputContainer tw="flex-1">
-                <Label htmlFor="name-input">Arquivo .zip do Game</Label>
+                <Label htmlFor="name-input">Arquivo compactado com o Game (.zip)</Label>
                 <Input
                   id="file-input"
                   type="file"

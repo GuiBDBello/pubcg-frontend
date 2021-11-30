@@ -11,12 +11,10 @@ import Header from "../components/headers/light.js";
 export default function NewGamePage() {
 
     return (
-        <>
-            <AnimationRevealPage>
-                <Header />
-                <GameForm />
-                <Footer />
-            </AnimationRevealPage>
-        </>
+        <AnimationRevealPage>
+            <Header />
+            <GameForm />
+            <Footer />
+        </AnimationRevealPage>
     );
 }
