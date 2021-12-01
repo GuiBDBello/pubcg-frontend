@@ -47,10 +47,12 @@ export default ({
         <Heading>{heading}</Heading>
       </TextContent>
       {user === null ? (
-        <CustomerTextInfo>
-          <br />
-          <CustomerTitle>Faça login para publicar uma análise.</CustomerTitle>
-        </CustomerTextInfo>
+        <TwoColumn>
+          <CustomerTextInfo>
+            <br />
+            <CustomerTitle>Faça <span tw="text-primary-500"><a href="/login">login</a></span> para publicar uma análise.</CustomerTitle>
+          </CustomerTextInfo>
+        </TwoColumn>
       ) : (
         <TwoColumn>
           <>

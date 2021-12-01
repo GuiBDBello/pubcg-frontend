@@ -73,13 +73,14 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
    * changing the defaultLinks variable below below.
    * If you manipulate links here, all the styling on the links is already done for you. If you pass links yourself though, you are responsible for styling the links or use the helper styled components that are defined here (NavLink)
    */
-  const [userLoggedIn, setUserLoggedIn] = useState(0);
+  const [userLoggedIn, setUserLoggedIn] = useState("0");
   const [userName, setUserName] = useState("");
 
   let history = useHistory();
 
   useEffect(() => {
-    setUserLoggedIn(localStorage.getItem("userLoggedIn"));
+    let userId = localStorage.getItem("userLoggedIn");
+    if (userId) setUserLoggedIn(userId);
 
     async function getUserEmail() {
       await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users/${userLoggedIn}`)
