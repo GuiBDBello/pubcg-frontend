@@ -82,7 +82,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
     let userId = localStorage.getItem("userLoggedIn");
     if (userId) setUserLoggedIn(userId);
 
-    async function getUserEmail() {
+    async function getUser() {
       await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users/${userLoggedIn}`)
         .then(response => response.json())
         .then(data => {
@@ -91,13 +91,13 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
           }
         })
         .catch(error => {
+          console.error(error);
           localStorage.setItem("userLoggedIn", 0);
-          // console.log(error);
         });
     }
 
-    if (userLoggedIn !== 0) {
-      getUserEmail();
+    if (userLoggedIn !== "0") {
+      getUser();
     }
   }, [userLoggedIn]);
 

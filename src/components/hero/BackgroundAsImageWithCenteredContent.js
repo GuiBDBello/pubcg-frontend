@@ -46,10 +46,9 @@ export default (props) => {
   let history = useHistory();
 
   useEffect(() => {
-    let userId = localStorage.getItem("userLoggedIn");
-    if (userId) setUserLoggedIn(userId);
+    setUserLoggedIn(localStorage.getItem("userLoggedIn"));
 
-    async function getUserEmail() {
+    async function getUserName() {
       await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users/${userLoggedIn}`)
         .then(response => response.json())
         .then(data => {
@@ -58,13 +57,13 @@ export default (props) => {
           }
         })
         .catch(error => {
+          console.log(error);
           localStorage.setItem("userLoggedIn", 0);
-          // console.log(error);
         });
     }
 
     if (userLoggedIn !== "0") {
-      getUserEmail();
+      getUserName();
     }
   }, [userLoggedIn]);
 

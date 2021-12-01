@@ -65,7 +65,6 @@ export default ({
       },
       body: JSON.stringify({ email })
     }).then(response => {
-      console.log(response);
       if (response.ok) {
         return response.json();
       } else if (response.status === 401) {
