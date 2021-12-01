@@ -9,19 +9,20 @@ import GameInfo from "components/hero/GameInfo";
 import GameMedia from "components/testimonials/GameMedia";
 import ReviewForm from "components/forms/ReviewGameForm";
 
+import ReviewList from "components/testimonials/ReviewList";
+
 export default function GamePage(props) {
 
     const [game, setGame] = useState({});
     const [medias, setMedias] = useState([]);
+    const [user, setUser] = useState({});
 
     useEffect(() => {
         let gameId = props.match.params.id;
-        console.log('gameId: ' + gameId);
 
         async function loadGame() {
             let game = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/games/${gameId}`)
                 .then(response => {
-                    console.log(response);
                     return response.json();
                 })
                 .catch(error => {
@@ -35,17 +36,32 @@ export default function GamePage(props) {
         async function loadMedias() {
             let medias = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/medias/game/${gameId}`)
                 .then(response => {
-                    console.log('medias response', response);
                     return response.json();
                 })
                 .catch(error => {
                     console.error(error);
                     // return {};
                 });
-                console.log('medias', medias);
             setMedias(medias);
         }
         loadMedias();
+
+        async function loadUser() {
+            let userId = localStorage.getItem("userLoggedIn");
+
+            if (userId) {
+                let user = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users/${userId}`)
+                    .then(response => {
+                        return response.json();
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        // return {};
+                    });
+                setUser(user);
+            }
+        }
+        loadUser();
     }, [props.match.params.id]);
 
     return (
@@ -62,7 +78,11 @@ export default function GamePage(props) {
             <GameMedia
                 medias={medias}
             />
-            <ReviewForm />
+            <ReviewForm
+                user={user}
+                gameId={game.id}
+            />
+            <ReviewList gameId={game.id} />
             <Footer />
         </AnimationRevealPage>
     );
