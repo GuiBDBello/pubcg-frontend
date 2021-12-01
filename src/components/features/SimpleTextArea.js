@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import tw from "twin.macro";
 
 const TextArea = tw.textarea`w-full px-8 py-4 rounded-lg font-medium 
@@ -8,18 +8,12 @@ transition duration-300 hocus:border-primary-500`;
 
 export default function SimpleTextArea(props) {
 
-    const [text, setText] = useState("");
-
-    function handleChange(e) {
-        setText(e.target.value);
-    }
-
     return (
         <TextArea
             type="textarea"
             name="textValue"
-            value={text}
-            onChange={handleChange}
+            value={props.value}
+            onChange={props.onChange}
             placeholder={props.placeholder}
             rows={5}
         />

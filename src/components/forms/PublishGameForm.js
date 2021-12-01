@@ -77,6 +77,8 @@ export default () => {
       }).then(game => {
         console.log(game);
         history.push(`/games/${game.id}`);
+      }).catch(error => {
+        console.error(error);
       }),
 
       // Second insert the media

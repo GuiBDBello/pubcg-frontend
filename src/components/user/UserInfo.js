@@ -60,7 +60,7 @@ export default ({
     name: "John Doe",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     featured: "Dev & Gamer",
-    photo: "./../../images/user-6.jpg"
+    photo: "https://pubcg-bucket.s3.sa-east-1.amazonaws.com/public/users/0-user.jpg"
   },
 }) => {
 

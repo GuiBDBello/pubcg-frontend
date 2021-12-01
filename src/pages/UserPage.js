@@ -9,13 +9,13 @@ import Header from "../components/headers/light.js";
 import GameCards from "../components/cards/GameSlider";
 import UserInfo from "../components/user/UserInfo";
 
-export default function UserPage() {
+export default function UserPage(props) {
 
     const [user, setUser] = useState({});
 
     useEffect(() => {
         async function loadUser() {
-            let userId = localStorage.getItem("userLoggedIn");
+            let userId = props.match.params.id;//localStorage.getItem("userLoggedIn");
             console.log(userId);
 
             if (!userId || userId <= 0) return {};
@@ -33,7 +33,7 @@ export default function UserPage() {
         }
 
         loadUser();
-    }, []);
+    }, [props.match.params.id]);
 
     return (
         <>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import { Container as ContainerBase } from "components/misc/Layouts";
 import tw from "twin.macro";
@@ -14,6 +14,8 @@ import { useHistory } from "react-router-dom";
 
 import image from "../images/games-02.svg";
 
+import SimpleTextArea from "../components/features/SimpleTextArea";
+
 const Container = tw(ContainerBase)`min-h-screen bg-primary-900 text-white font-medium flex justify-center -m-8`;
 const Content = tw.div`max-w-screen-xl m-0 sm:mx-20 sm:my-16 bg-white text-gray-900 shadow sm:rounded-lg flex justify-center flex-1`;
 const MainContainer = tw.div`lg:w-1/2 xl:w-5/12 p-6 sm:p-12`;
@@ -24,7 +26,9 @@ const Heading = tw.h1`text-2xl xl:text-3xl font-extrabold`;
 const FormContainer = tw.div`w-full flex-1 mt-8`;
 
 const Form = tw.form`mx-auto max-w-xs`;
-const Input = tw.input`w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5 first:mt-0`;
+// const Input = tw.input`w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5 first:mt-0`;
+const Input = tw.input`w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border-2 border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5 first:mt-0 transition duration-300 hocus:border-primary-500`;
+
 const SubmitButton = styled.button`
   ${tw`mt-5 tracking-wide font-semibold bg-primary-500 text-gray-100 w-full py-4 rounded-lg hover:bg-primary-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none`}
   .icon {
@@ -55,33 +59,46 @@ export default ({
 }) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [photo, setPhoto] = useState(null);
+  const [description, setDescription] = useState("");
+  const photo = useRef(null);
   const [errorMessage, setErrorMessage] = useState("");
 
   let history = useHistory();
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const body = {
-      email: email,
-      name: name,
-      photo: photo
-    }
+
+    const data = new FormData();
+    data.append("email", email);
+    data.append("name", name);
+    data.append("description", description);
+    data.append("photo", photo.current.files[0]);
+
     await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body)
+      // headers: { "Content-Type": "application/json" },
+      body: data
     })
-      .then(response => response.json())
-      .then(data => {
-        if (data.errors) {
-          setErrorMessage(data.errors[0].message);
+      .then(response => {
+        if (response.ok) {
+          const game = response.json();
+          return game;
+        } else if (response.status === 401) {
+          alert("Oops!", response.json());
+          return response.json();
+          // error
+        }
+      })
+      .then(user => {
+        if (user.errors) {
+          setErrorMessage(user.errors[0].message);
         } else {
-          history.push("/");
+          localStorage.setItem("userLoggedIn", user.id);
+          history.push(`/users/${user.id}`);
         }
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       });
   }
 
@@ -107,10 +124,16 @@ export default ({
                     placeholder="Nome"
                     onChange={(e) => setName(e.target.value)}
                   />
+                  <SimpleTextArea
+                    placeholder="Conte um pouco sobre você (sonhos, receios, objetivos, cotidiano, etc.)"
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
                   <Input
+                    id="photo-input"
                     type="file"
-                    placeholder="Foto"
-                    onChange={(e) => setPhoto(e.target.value)}
+                    name="photo"
+                    placeholder="Imagem do perfil."
+                    ref={photo}
                   />
                   {/* <Input type="password" placeholder="Password" /> */}
                   <SubmitButton type="submit">
