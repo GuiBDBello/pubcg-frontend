@@ -7,7 +7,7 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 import logo from "images/logo.png";
 import { ReactComponent as SignUpIcon } from "feather-icons/dist/icons/user-plus.svg";
 
-import { SectionHeading as HeadingBase } from "components/misc/Headings";
+// import { SectionHeading as HeadingBase } from "components/misc/Headings";
 // import { SectionDescription as DescriptionBase } from "components/misc/Typography";
 
 import { useHistory } from "react-router-dom";
@@ -44,7 +44,7 @@ const IllustrationImage = styled.div`
   ${tw`m-12 xl:m-16 w-full max-w-lg bg-contain bg-center bg-no-repeat`}
 `;
 
-const HeadingError = tw(HeadingBase)`text-center text-primary-900 leading-snug`;
+// const HeadingError = tw(HeadingBase)`text-center text-primary-900 leading-snug`;
 // const Description = tw(DescriptionBase)`mt-4 text-center lg:text-base text-gray-700 max-w-lg mx-auto lg:mx-0`;
 
 export default ({
@@ -61,7 +61,7 @@ export default ({
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const photo = useRef(null);
-  const [errorMessage, setErrorMessage] = useState("");
+  // const [errorMessage, setErrorMessage] = useState("");
 
   let history = useHistory();
 
@@ -90,12 +90,14 @@ export default ({
         }
       })
       .then(user => {
-        if (user.errors) {
-          setErrorMessage(user.errors[0].message);
-        } else {
+        // if (user.errors) {
+        //   setErrorMessage(user.errors[0].message);
+        // } else {
+        if (user.id) {
           localStorage.setItem("userLoggedIn", user.id);
           history.push(`/users/${user.id}`);
         }
+        // }
       })
       .catch(error => {
         console.error(error);
@@ -140,7 +142,7 @@ export default ({
                     <SubmitButtonIcon className="icon" />
                     <span className="text">{submitButtonText}</span>
                   </SubmitButton>
-                  <HeadingError>{errorMessage}</HeadingError>
+                  {/* <HeadingError>{errorMessage}</HeadingError> */}
                   {/* <p tw="mt-6 text-xs text-gray-600 text-center">
                   I agree to abide by treact's{" "}
                   <a href={tosUrl} tw="border-b border-gray-500 border-dotted">
