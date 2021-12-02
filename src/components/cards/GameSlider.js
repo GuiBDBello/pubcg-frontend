@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import Slider from "react-slick";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -32,7 +33,7 @@ const CardSlider = styled(Slider)`
     ${tw`h-auto flex justify-center mb-1`}
   }
 `;
-const Card = tw.div`h-full flex! flex-col sm:border max-w-sm sm:rounded-tl-4xl sm:rounded-br-5xl relative focus:outline-none`;
+const Card = tw.div`hover:shadow-xl hover:cursor-pointer hover:opacity-75 h-full flex! flex-col sm:border max-w-sm sm:rounded-tl-4xl sm:rounded-br-5xl relative focus:outline-none`;
 const CardImage = styled.div(props => [
   `background-image: url("${props.imageSrc}");`,
   tw`w-full h-56 sm:h-64 bg-cover bg-center rounded sm:rounded-none sm:rounded-tl-4xl`
@@ -66,6 +67,8 @@ export default ({
   heading = "Games",
   message = "Você ainda não jogou/publicou nenhum jogo."
 }) => {
+  let history = useHistory();
+
   function getSlidesToShow(games, max) {
     let slidesToShow = (
       (games.length >= 3) ? 3 : (
@@ -124,7 +127,11 @@ export default ({
         ) : (
           <CardSlider ref={setSliderRef} {...sliderSettings}>
             {games.map((game, index) => (
-              <Card key={index}>
+              <Card key={index} onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo(0, 0);
+                history.push(`/games/${game.id}`);
+              }}>
                 <CardImage imageSrc={game.imageSrc} />
                 <TextInfo>
                   <TitleReviewContainer>

@@ -34,7 +34,7 @@ const InputContainer = tw.div`relative py-5 mt-6`;
 const Label = tw.label`absolute top-0 left-0 tracking-wide font-semibold text-sm`;
 const Input = tw.input``;
 const TextArea = tw.textarea`h-24 sm:h-full resize-none`;
-const SubmitButton = tw.button`w-full sm:w-32 mt-6 py-3 bg-gray-100 text-primary-500 rounded-full font-bold tracking-wide shadow-lg uppercase text-sm transition duration-300 transform focus:outline-none focus:shadow-outline hover:bg-gray-300 hover:text-primary-700 hocus:-translate-y-px hocus:shadow-xl`;
+const SubmitButton = tw.button`disabled:bg-gray-500 disabled:hover:bg-gray-500 w-full sm:w-32 mt-6 py-3 bg-gray-100 text-primary-500 rounded-full font-bold tracking-wide shadow-lg uppercase text-sm transition duration-300 transform focus:outline-none focus:shadow-outline hover:bg-gray-300 hover:text-primary-700 hocus:-translate-y-px hocus:shadow-xl`;
 
 const SvgDotPattern1 = tw(SvgDotPatternIcon)`absolute bottom-0 right-0 transform translate-y-1/2 translate-x-1/2 -z-10 opacity-50 text-primary-500 fill-current w-24`
 
@@ -42,6 +42,7 @@ export default () => {
 
   const [name, setName] = useState("Sample Game");
   const [description, setDescription] = useState("Lorem Ipsum");
+  const [developerId, setDeveloperId] = useState(null);
   const logo = useRef(null);
   const file = useRef(null);
   const media = useRef(null);
@@ -52,6 +53,9 @@ export default () => {
   async function handleSubmit(e) {
     e.preventDefault();
     setButtonDisabled(true);
+    let devId = localStorage.getItem("userLoggedIn");
+    console.log("devId", devId);
+    setDeveloperId(devId);
 
     const data = new FormData();
     data.append("name", name);
@@ -62,6 +66,7 @@ export default () => {
     for (let i = 0; i < mediaFiles.length; i++) {
       data.append("media", mediaFiles[i]);
     }
+    data.append("developerId", devId);
 
     // Display the key/value pairs
     for (let pair of data.entries()) {

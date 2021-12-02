@@ -12,6 +12,7 @@ import UserInfo from "../components/user/UserInfo";
 export default function UserPage(props) {
 
     const [user, setUser] = useState({});
+    const [userGames, setUserGames] = useState([]);
 
     useEffect(() => {
         async function loadUser() {
@@ -31,8 +32,35 @@ export default function UserPage(props) {
 
             if (user) setUser(user);
         }
-
         loadUser();
+
+        async function loadUserGames() {
+            let userId = props.match.params.id;
+            console.log(userId);
+
+            if (!userId || userId <= 0) return {};
+
+            let games = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/games/user/${userId}`)
+                .then((response) => {
+                    return response.json();
+                })
+                .catch((error) => {
+                    console.error('Failed to fetch user.', error);
+                    return [];
+                });
+
+            let mappedGames = games.map((game) => {
+                return {
+                    "id": game.id,
+                    "title": game.name,
+                    "description": game.description,
+                    "imageSrc": game.logo,
+                };
+            });
+
+            if (mappedGames) setUserGames(mappedGames);
+        }
+        loadUserGames();
     }, [props.match.params.id]);
 
     return (
@@ -43,6 +71,7 @@ export default function UserPage(props) {
                     user={user}
                 />
                 <GameCards
+                    games={userGames}
                     heading="Meus Games"
                     message="Você ainda não publicou nenhum jogo."
                 />
