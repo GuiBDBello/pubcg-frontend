@@ -54,8 +54,8 @@ export default () => {
     e.preventDefault();
     setButtonDisabled(true);
     let devId = localStorage.getItem("userLoggedIn");
-    console.log("devId", devId);
     setDeveloperId(devId);
+    console.log("devId", devId, developerId);
 
     const data = new FormData();
     data.append("name", name);

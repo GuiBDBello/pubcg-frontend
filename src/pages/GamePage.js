@@ -11,6 +11,8 @@ import ReviewForm from "components/forms/ReviewGameForm";
 
 import ReviewList from "components/testimonials/ReviewList";
 
+import Header from "../components/headers/light.js";
+
 export default function GamePage(props) {
 
     const [game, setGame] = useState({});
@@ -66,6 +68,7 @@ export default function GamePage(props) {
 
     return (
         <AnimationRevealPage>
+            <Header />
             <GameInfo
                 heading={game.name}
                 description={game.description}

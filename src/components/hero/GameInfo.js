@@ -4,8 +4,6 @@ import tw from "twin.macro";
 //eslint-disable-next-line
 import { css } from "styled-components/macro";
 
-import Header from "../headers/light.js";
-
 import ReactModalAdapter from "../../helpers/ReactModalAdapter.js";
 import ResponsiveGameEmbed from "../../helpers/ResponsiveGameEmbed.js";
 
@@ -15,12 +13,25 @@ import { ReactComponent as SvgDecoratorBlob1 } from "../../images/svg-decorator-
 import { ReactComponent as SvgDecoratorBlob2 } from "../../images/dot-pattern.svg";
 import DesignIllustration from "../../images/design-illustration.svg";
 
-const Container = tw.div`relative`;
-const TwoColumn = tw.div`flex flex-col lg:flex-row md:items-center max-w-screen-xl mx-auto py-20 md:py-24`;
-const LeftColumn = tw.div`relative lg:w-5/12 lg:pr-12 flex-shrink-0 text-center lg:text-left`;
-const RightColumn = tw.div`relative mt-12 lg:mt-0 flex flex-col justify-center`;
+import { Container as ContainerBase, ContentWithPaddingXl as ContentBase } from "components/misc/Layouts.js";
 
-const Heading = tw.h1`font-black text-3xl md:text-5xl leading-snug max-w-3xl`;
+const Container = tw(ContainerBase)`bg-primary-900 text-gray-100 -mx-8`;
+// const Container = styled.div`
+//   ${tw`relative -mx-8 -mt-8 bg-center bg-cover h-screen min-h-144
+//   bg-primary-900`}
+// `;
+const ContentWithPaddingXl = tw(
+  ContentBase
+)`relative z-10 mx-auto px-0 py-10 sm:px-6 md:px-8 lg:px-12 xl:px-24 sm:py-20 flex flex-col max-w-screen-xl`;
+
+const WhiteBackgroundOverlay = tw.div`absolute inset-x-0 bottom-0 h-1/6 lg:h-1/3 bg-white z-0`;
+
+// const Container = tw.div`relative`;
+// const TwoColumn = tw.div`flex flex-col lg:flex-row md:items-center max-w-screen-xl mx-auto py-20 md:py-24`;
+// const LeftColumn = tw.div`relative lg:w-5/12 lg:pr-12 flex-shrink-0 text-center lg:text-left`;
+// const RightColumn = tw.div`relative mt-12 lg:mt-0 flex flex-col justify-center`;
+
+const Heading = tw.h1`mt-4 font-black text-3xl md:text-5xl leading-snug max-w-3xl`;
 const Paragraph = tw.p`my-5 lg:my-8 text-sm lg:text-base font-medium text-gray-600 max-w-lg mx-auto lg:mx-0`;
 
 const Actions = tw.div`flex flex-col items-center sm:flex-row justify-center lg:justify-start mt-8`;
@@ -58,6 +69,26 @@ const StyledModal = styled(ReactModalAdapter)`
 `;
 const CloseModalButton = tw.button`absolute top-0 right-0 mt-8 mr-8 hocus:text-primary-500`;
 
+const GameContainer = tw.div`mt-8 flex flex-col items-center lg:justify-between text-gray-900 font-sans`;
+const Game = styled.div`
+  ${tw`items-center w-full max-w-xl bg-white rounded-lg shadow-sm py-4 px-4 flex flex-col justify-between mt-16 first:mt-0 lg:mt-0 shadow-raised`}
+`;
+
+// const GameFeatures = styled.div`
+//   .nameAndFeaturedContainer {
+//     ${tw`flex flex-wrap flex-col sm:flex-row justify-between items-center`}
+//   }
+//   .name {
+//     ${tw`lg:text-lg xl:text-xl font-bold uppercase tracking-wider mr-3`}
+//   }
+//   .featuredText {
+//     ${tw`text-xs font-bold px-3 rounded py-2 uppercase bg-green-300 text-green-900 leading-none mt-4 sm:mt-0 w-full sm:w-auto text-center`}
+//   }
+//   .description {
+//     ${tw`mt-8 font-medium text-gray-700 lg:text-sm xl:text-base`}
+//   }
+// `;
+
 export default ({
   heading = "Game Name",
   description = "Game Description.",
@@ -74,11 +105,19 @@ export default ({
   const toggleModal = () => setModalIsOpen(!modalIsOpen);
 
   return (
-    <>
-      <Header />
-      <Container>
-        <TwoColumn>
-          <LeftColumn>
+    <Container>
+      <ContentWithPaddingXl>
+        <GameContainer>
+          <Game>
+            <IllustrationContainer>
+              <img
+                css={imageCss}
+                src={imageSrc}
+                alt="Hero"
+              />
+              {imageDecoratorBlob && <DecoratorBlob2 />}
+            </IllustrationContainer>
+
             <Heading>{heading}</Heading>
             <Paragraph>{description}</Paragraph>
             <Actions>
@@ -90,34 +129,25 @@ export default ({
                 <span className="playText">{playGameButtonText}</span>
               </WatchVideoButton>
             </Actions>
-          </LeftColumn>
-          <RightColumn>
-            <IllustrationContainer>
-              <img
-                css={imageCss}
-                src={imageSrc}
-                alt="Hero"
-              />
-              {imageDecoratorBlob && <DecoratorBlob2 />}
-            </IllustrationContainer>
-          </RightColumn>
-        </TwoColumn>
-        <DecoratorBlob1 />
-        <StyledModal
-          closeTimeoutMS={300}
-          className="mainHeroModal"
-          isOpen={modalIsOpen}
-          onRequestClose={toggleModal}
-          shouldCloseOnOverlayClick={true}
-        >
-          <CloseModalButton onClick={toggleModal}>
-            <CloseIcon tw="w-6 h-6" />
-          </CloseModalButton>
-          <div className="content">
-            <ResponsiveGameEmbed url={playGameUrl} tw="w-full" />
-          </div>
-        </StyledModal>
-      </Container>
-    </>
+          </Game>
+        </GameContainer>
+      </ContentWithPaddingXl>
+      <WhiteBackgroundOverlay />
+      <DecoratorBlob1 />
+      <StyledModal
+        closeTimeoutMS={300}
+        className="mainHeroModal"
+        isOpen={modalIsOpen}
+        onRequestClose={toggleModal}
+        shouldCloseOnOverlayClick={true}
+      >
+        <CloseModalButton onClick={toggleModal}>
+          <CloseIcon tw="w-6 h-6" />
+        </CloseModalButton>
+        <div className="content">
+          <ResponsiveGameEmbed url={playGameUrl} tw="w-full" />
+        </div>
+      </StyledModal>
+    </Container>
   );
 };

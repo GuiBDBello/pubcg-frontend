@@ -66,7 +66,7 @@ export default ({
     }, [gameId]);
 
     return (
-        <>
+        <Container>
             {subheading && <Subheading>{subheading}</Subheading>}
             <hr />
             {reviews.length <= 0 ? (
@@ -107,6 +107,6 @@ export default ({
                     </Container>
                 })
             )}
-        </>
+        </Container>
     );
 };
