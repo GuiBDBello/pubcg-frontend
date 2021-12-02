@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
@@ -41,6 +41,8 @@ export default ({
 }) => {
   // The textOnLeft boolean prop can be used to display either the text on left or right side of the image.
 
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
+
   return (
     <Container>
       <TextContent>
@@ -71,7 +73,7 @@ export default ({
               <TextContent>
                 <Form action={formAction} method={formMethod}>
                   <SimpleTextArea placeholder="Escreva sua análise aqui" />
-                  <SubmitButton type="submit">{submitButtonText}</SubmitButton>
+                  <SubmitButton disabled={isButtonDisabled} type="submit">{submitButtonText}</SubmitButton>
                 </Form>
               </TextContent>
             </TextColumn>

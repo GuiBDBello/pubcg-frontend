@@ -6,6 +6,8 @@ import tw from "twin.macro";
 import { css } from "styled-components/macro"; //eslint-disable-line
 import { ReactComponent as SvgDotPatternIcon } from "../../images/dot-pattern.svg"
 
+import ReactLoading from "react-loading";
+
 const Container = tw.div`relative`;
 const Content = tw.div`max-w-screen-xl mx-auto pb-10 lg:pb-12`;
 
@@ -43,11 +45,13 @@ export default () => {
   const logo = useRef(null);
   const file = useRef(null);
   const media = useRef(null);
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
 
   let history = useHistory();
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setButtonDisabled(true);
 
     const data = new FormData();
     data.append("name", name);
@@ -158,9 +162,23 @@ export default () => {
                 />
               </InputContainer>
 
-              <SubmitButton type="submit" value="Submit">
-                Enviar
-              </SubmitButton>
+              <TwoColumn>
+                <Column>
+                  <SubmitButton disabled={isButtonDisabled} type="submit" value="Submit">
+                    Enviar
+                  </SubmitButton>
+                </Column>
+                <Column>
+                  {isButtonDisabled ? (
+                    <>
+                      <Content>O envio pode levar alguns minutos, você será redirecionado quando finalizar.</Content>
+                      <ReactLoading type={"spinningBubbles"} coolr={"#abcdef"} height={"20%"} width={"100%"}></ReactLoading>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </Column>
+              </TwoColumn>
             </form>
           </div>
           <SvgDotPattern1 />
