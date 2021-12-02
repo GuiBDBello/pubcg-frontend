@@ -59,6 +59,11 @@ export default () => {
       data.append("media", mediaFiles[i]);
     }
 
+    // Display the key/value pairs
+    for (let pair of data.entries()) {
+      console.log("FormData", pair[0] + ', ' + pair[1]);
+    }
+
     Promise.all([
       // First insert the game
       await fetch(`${process.env.REACT_APP_API_ENDPOINT}/games`, {
@@ -67,42 +72,18 @@ export default () => {
         body: data
       }).then(response => {
         if (response.ok) {
-          const game = response.json();
-          return game;
+          return response.json();
         } else if (response.status === 401) {
           alert("Oops!", response.json());
           return response.json();
           // error
         }
       }).then(game => {
-        console.log(game);
+        console.log("game", game);
         history.push(`/games/${game.id}`);
       }).catch(error => {
         console.error(error);
       }),
-
-      // Second insert the media
-      // await fetch(`${process.env.REACT_APP_API_ENDPOINT}/medias`, {
-      //   method: "POST",
-      //   // headers: { "Content-Type": "multipart/form-data" },
-      //   body: mediaData
-      // }).then(response => {
-      //   console.log('medias response', response);
-      //   if (response.ok) {
-      //     const media = response.json();
-      //     console.log(media);
-
-      //     // setMediaId(media.id);
-      //     return media;
-      //   } else if (response.status === 401) {
-      //     alert("Oops!", response.json());
-      //     return response.json();
-      //     // error
-      //   }
-      // }).then(game => {
-      //   // history.push(`/games/${game.id}`);
-      //   console.log(game);
-      // }),
     ]).then(values => {
       console.log("values", values);
       // history.push(`/games/${game.id}`);

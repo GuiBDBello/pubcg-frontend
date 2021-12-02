@@ -25,6 +25,7 @@ const CustomerTextInfo = tw.div`text-center lg:text-left sm:ml-6 mt-2 sm:mt-0`;
 const CustomerName = tw.h5`font-semibold text-lg lg:text-xl xl:text-2xl text-primary-500`;
 const CustomerTitle = tw.p`font-medium text-sm text-secondary-100`;
 
+const NoReviewDiv = tw.div`outline-none m-16`;
 const NoReviewTitle = tw.h5`font-semibold text-lg lg:text-xl xl:text-2xl text-gray-700`;
 // const List = tw.div`flex flex-col-reverse`;
 
@@ -37,7 +38,7 @@ const TextContent = tw.div`lg:pt-8 text-center md:text-left`;
 const Form = tw.form`md:mt-10 text-sm`
 
 export default ({
-    subheading = "Análises",
+    subheading = "Opiniões da Comunidade",
     formAction = "#",
     formMethod = "get",
     textOnLeft = false,
@@ -69,14 +70,14 @@ export default ({
             {subheading && <Subheading>{subheading}</Subheading>}
             <hr />
             {reviews.length <= 0 ? (
-                <TestimonialText>
+                <NoReviewDiv>
                     <CustomerInfo>
                         <CustomerTextInfo>
                             <NoReviewTitle>Seja o primeiro a publicar uma análise!</NoReviewTitle>
                             {/* <CustomerTitle>Seja o primeiro a publicar uma análise!</CustomerTitle> */}
                         </CustomerTextInfo>
                     </CustomerInfo>
-                </TestimonialText>
+                </NoReviewDiv>
             ) : (
                 reviews.map(review => {
                     return <Container>
