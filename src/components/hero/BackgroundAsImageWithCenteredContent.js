@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 
 import tw from "twin.macro";
@@ -43,6 +43,8 @@ export default (props) => {
   const [userLoggedIn, setUserLoggedIn] = useState("0");
   const [userName, setUserName] = useState("");
 
+  const refContainer = useRef(null)
+
   let history = useHistory();
 
   useEffect(() => {
@@ -76,7 +78,14 @@ export default (props) => {
   const navLinks = [
     <NavLinks key={1}>
       {props.navLinks.map((navLink, index) => {
-        return (
+        return (navLink.textContent === "Games") ? (
+          <NavLink onClick={(e) => {
+            e.preventDefault();
+            window.scrollTo(0, refContainer.current.clientHeight);
+          }} key={index} href={navLink.url}>
+            {navLink.textContent}
+          </NavLink>
+        ) : (
           <NavLink key={index} href={navLink.url}>
             {navLink.textContent}
           </NavLink>
@@ -107,7 +116,7 @@ export default (props) => {
   ];
 
   return (
-    <Container>
+    <Container ref={refContainer}>
       <OpacityOverlay />
       <HeroContainer>
         <StyledHeader links={navLinks} />
@@ -115,7 +124,9 @@ export default (props) => {
           <Heading>
             {props.heading}
           </Heading>
-          <PrimaryAction>{props.primaryButtonText}</PrimaryAction>
+          <PrimaryAction onClick={() => {
+            window.scrollTo(0, refContainer.current.clientHeight);
+          }}>{props.primaryButtonText}</PrimaryAction>
         </Content>
       </HeroContainer>
     </Container>

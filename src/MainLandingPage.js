@@ -78,10 +78,10 @@ export default function App() {
             textContent: 'Games',
             url: '/games'
           },
-          {
-            textContent: 'Game Jams',
-            url: '/gameJams'
-          },
+          // {
+          //   textContent: 'Game Jams',
+          //   url: '/gameJams'
+          // },
           {
             textContent: 'Publicar Game',
             url: '/newGame'

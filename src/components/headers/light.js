@@ -110,7 +110,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
   const defaultLinks = [
     <NavLinks key={1}>
       <NavLink href="/games">Games</NavLink>
-      <NavLink href="/gameJams">Game Jams</NavLink>
+      {/* <NavLink href="/gameJams">Game Jams</NavLink> */}
       <NavLink href="/newGame">Publicar Game</NavLink>
       {(userLoggedIn !== "0") ?
         <>
