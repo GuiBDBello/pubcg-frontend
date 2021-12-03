@@ -31,7 +31,7 @@ export default function GamePage(props) {
                     console.error(error);
                     // return {};
                 });
-            setGame(game);
+            if (game) setGame(game);
         }
         loadGame();
 
@@ -44,7 +44,7 @@ export default function GamePage(props) {
                     console.error(error);
                     // return {};
                 });
-            setMedias(medias);
+            if (medias) setMedias(medias);
         }
         loadMedias();
 
@@ -60,7 +60,7 @@ export default function GamePage(props) {
                         console.error(error);
                         // return {};
                     });
-                setUser(user);
+                if (user) setUser(user);
             }
         }
         loadUser();

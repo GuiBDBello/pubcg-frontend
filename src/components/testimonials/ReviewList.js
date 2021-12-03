@@ -6,10 +6,20 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 import SimpleTextArea from "../features/SimpleTextArea";
 
 import { Subheading as SubheadingBase } from "components/misc/Headings.js";
+
+import Rate from 'rc-rate';
+import 'rc-rate/assets/index.css';
+
+const StyledRate = styled(Rate)`
+  &.rc-rate {
+    font-size: ${({ size }) => size}px;
+  }
+`;
+
 const Subheading = tw(SubheadingBase)`text-center md:text-left text-xl`;
 
-const Container = tw.div`relative justify-between max-w-screen-xl mx-auto w-11/12`;
-const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto pb-20 md:pb-24 items-center`;
+const Container = tw.div`relative justify-between max-w-screen-xl mx-auto w-11/12 last:pb-20`;
+const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto items-center`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
 const ImageColumn = tw(Column)`md:w-3/12 flex-shrink-0 h-auto`;
 const TextColumn = styled(Column)(props => [
@@ -59,7 +69,7 @@ export default ({
                     // return {};
                 });
             console.log("reviews", reviews);
-            setReviews(reviews);
+            if (reviews) setReviews(reviews);
         }
 
         loadReviews();
@@ -69,7 +79,7 @@ export default ({
         <Container>
             {subheading && <Subheading>{subheading}</Subheading>}
             <hr />
-            {reviews.length <= 0 ? (
+            {(reviews.length <= 0) ? (
                 <NoReviewDiv>
                     <CustomerInfo>
                         <CustomerTextInfo>
@@ -79,8 +89,8 @@ export default ({
                     </CustomerInfo>
                 </NoReviewDiv>
             ) : (
-                reviews.map(review => {
-                    return <Container>
+                reviews.map((review, index) => {
+                    return <Container key={index}>
                         <TwoColumn>
                             <ImageColumn>
                                 <TestimonialText>
@@ -97,15 +107,20 @@ export default ({
                                 <TextContent>
                                     <Form action={formAction} method={formMethod}>
                                         <SimpleTextArea disabled readonly value={review.description} rows={3} />
-                                        <CustomerTextInfo>
+                                        <StyledRate
+                                            size={48}
+                                            allowHalf
+                                            value={review.score}
+                                        />
+                                        {/* <CustomerTextInfo>
                                             <CustomerName>{review.score}</CustomerName>
-                                        </CustomerTextInfo>
+                                        </CustomerTextInfo> */}
                                     </Form>
                                 </TextContent>
                             </TextColumn>
                         </TwoColumn>
                     </Container>
-                })
+                }).reverse()
             )}
         </Container>
     );

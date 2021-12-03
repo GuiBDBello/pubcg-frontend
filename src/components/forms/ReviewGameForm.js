@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
@@ -6,6 +6,15 @@ import { SectionHeading } from "components/misc/Headings.js";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
 
 import SimpleTextArea from "../features/SimpleTextArea";
+
+import Rate from 'rc-rate';
+import 'rc-rate/assets/index.css';
+
+const StyledRate = styled(Rate)`
+  &.rc-rate {
+    font-size: ${({ size }) => size}px;
+  }
+`;
 
 const Container = tw.div`relative justify-between max-w-screen-xl mx-auto`;
 const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto pb-20 md:pb-24 items-center`;
@@ -38,11 +47,42 @@ export default ({
   formMethod = "get",
   textOnLeft = false,
   user = null,
+  gameId = null,
 }) => {
   // The textOnLeft boolean prop can be used to display either the text on left or right side of the image.
 
-  function handleSubmit(e) {
+  const [description, setDescription] = useState("");
+  const [score, setScore] = useState(0);
+  // const [score, setScore] = useState(0);
+
+  async function handleSubmit(e) {
     e.preventDefault();
+
+    let body = {
+      score: score,
+      description: description,
+      gameId: gameId,
+      userId: user.id,
+    }
+
+    let newReview = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/reviews`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }).then(response => {
+      if (response.ok) {
+        return response.json();
+      } else if (response.status === 401) {
+        alert("Oops!", response.json());
+        return response.json();
+        // error
+      }
+    }).then(review => {
+      console.log("review", review);
+      window.location.reload();
+    }).catch(error => {
+      console.error(error);
+    });
   }
 
   return (
@@ -74,8 +114,16 @@ export default ({
             <TextColumn textOnLeft={textOnLeft}>
               <TextContent>
                 <Form onSubmit={handleSubmit} action={formAction} method={formMethod}>
-                  <SimpleTextArea placeholder="Escreva sua análise aqui" />
+                  <SimpleTextArea onChange={(e) => {
+                    setDescription(e.target.value);
+                    console.log(e.target.value);
+                  }} placeholder="Escreva sua análise aqui" />
                   <SubmitButton type="submit">{submitButtonText}</SubmitButton>
+                  <StyledRate
+                    size={48}
+                    allowHalf
+                    onChange={(score) => setScore(score)}
+                  />
                 </Form>
               </TextContent>
             </TextColumn>
