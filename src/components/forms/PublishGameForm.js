@@ -176,7 +176,7 @@ export default () => {
                 <Column>
                   {isButtonDisabled ? (
                     <>
-                      <Content>O envio pode levar alguns minutos, você será redirecionado quando finalizar.</Content>
+                      <Content>O envio pode levar alguns minutos. Seu navegador redirecionará você à página do jogo ao finalizar.</Content>
                       <ReactLoading type={"spinningBubbles"} coolr={"#abcdef"} height={"20%"} width={"100%"}></ReactLoading>
                     </>
                   ) : (

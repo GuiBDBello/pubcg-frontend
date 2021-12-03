@@ -16,10 +16,6 @@ import DesignIllustration from "../../images/design-illustration.svg";
 import { Container as ContainerBase, ContentWithPaddingXl as ContentBase } from "components/misc/Layouts.js";
 
 const Container = tw(ContainerBase)`bg-primary-900 text-gray-100 -mx-8`;
-// const Container = styled.div`
-//   ${tw`relative -mx-8 -mt-8 bg-center bg-cover h-screen min-h-144
-//   bg-primary-900`}
-// `;
 const ContentWithPaddingXl = tw(
   ContentBase
 )`relative z-10 mx-auto px-0 py-10 sm:px-6 md:px-8 lg:px-12 xl:px-24 sm:py-20 flex flex-col max-w-screen-xl`;
@@ -73,21 +69,6 @@ const GameContainer = tw.div`mt-8 flex flex-col items-center lg:justify-between 
 const Game = styled.div`
   ${tw`items-center w-full max-w-xl bg-white rounded-lg shadow-sm py-4 px-4 flex flex-col justify-between mt-16 first:mt-0 lg:mt-0 shadow-raised`}
 `;
-
-// const GameFeatures = styled.div`
-//   .nameAndFeaturedContainer {
-//     ${tw`flex flex-wrap flex-col sm:flex-row justify-between items-center`}
-//   }
-//   .name {
-//     ${tw`lg:text-lg xl:text-xl font-bold uppercase tracking-wider mr-3`}
-//   }
-//   .featuredText {
-//     ${tw`text-xs font-bold px-3 rounded py-2 uppercase bg-green-300 text-green-900 leading-none mt-4 sm:mt-0 w-full sm:w-auto text-center`}
-//   }
-//   .description {
-//     ${tw`mt-8 font-medium text-gray-700 lg:text-sm xl:text-base`}
-//   }
-// `;
 
 export default ({
   heading = "Game Name",

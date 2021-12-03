@@ -24,6 +24,9 @@ export default ({ url, background="black", className="game" }) => {
         }}
         src={url}
         frameBorder="0"
+        allowFullScreen={true}
+        webkitallowfullscreen={"true"}
+        mozallowfullscreen={"true"}
       />
     </div>
   );
