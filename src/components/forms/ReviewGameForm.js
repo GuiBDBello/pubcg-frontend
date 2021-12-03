@@ -65,7 +65,7 @@ export default ({
       userId: user.id,
     }
 
-    let newReview = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/reviews`, {
+    await fetch(`${process.env.REACT_APP_API_ENDPOINT}/reviews`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
