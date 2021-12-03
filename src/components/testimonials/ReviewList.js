@@ -90,15 +90,19 @@ export default ({
                 </NoReviewDiv>
             ) : (
                 reviews.map((review, index) => {
+                    let photo;
+                    if (review.user.photo) photo = review.user.photo;
+                    else photo = "https://pubcg-bucket.s3.sa-east-1.amazonaws.com/public/users/0-user.jpg"
+
                     return <Container key={index}>
                         <TwoColumn>
                             <ImageColumn>
                                 <TestimonialText>
                                     <CustomerInfo>
-                                        <CustomerProfilePicture src={review.user.photo} alt={review.user.name} />
+                                        <CustomerProfilePicture src={photo} alt={review.user.name} />
                                         <CustomerTextInfo>
-                                            <CustomerName>{review.user.name}</CustomerName>
-                                            <CustomerTitle>{review.user.features}</CustomerTitle>
+                                            <CustomerName>{review.user.name || "Anônimo"}</CustomerName>
+                                            <CustomerTitle>{review.user.features || ""}</CustomerTitle>
                                         </CustomerTextInfo>
                                     </CustomerInfo>
                                 </TestimonialText>
