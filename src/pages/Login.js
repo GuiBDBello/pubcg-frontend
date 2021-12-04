@@ -50,7 +50,7 @@ export default ({
 
 }) => {
 
-  const [email, setEmail] = useState("gdb@hubcg.gg");
+  const [email, setEmail] = useState("");
 
   let history = useHistory();
 
